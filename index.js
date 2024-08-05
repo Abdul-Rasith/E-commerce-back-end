@@ -4,15 +4,18 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
 dotenv.config();
 
-const User = require("./models/User"); // Ensure this path is correct
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-app.use(cors()); // Enable CORS
+const User = require("./models/User");
+
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Enable Mongoose debugging
+mongoose.set("debug", true);
 
 // Test route
 app.get("/test", (req, res) => {
@@ -74,7 +77,6 @@ app.post('/create-payment-intent', async (req, res) => {
     }
 });
 
-// Contact form submission route
 app.post('/contact', (req, res) => {
     const { name, email, message } = req.body;
 
